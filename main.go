@@ -8,6 +8,8 @@ import (
 	"github.com/loogo/syncserver/jsonrpc"
 )
 
+var cfg config
+
 func main() {
 	db, err := sqlx.Open("mysql", "wcl:1@tcp(192.168.31.127:3306)/gzl")
 	if err != nil {
@@ -15,21 +17,21 @@ func main() {
 	}
 	defer db.Close()
 
-	config := loadconfig()
+	cfg = loadconfig()
 	jsonObj := loadmetadate()
-
+	fmt.Println(jsonObj)
 	for _, table := range jsonObj.Tables {
-		data := query(db, table, "")
+		data := query(db, &table)
 		// out, _ := json.Marshal(data)
 		// fmt.Println(string(out))
 		params := map[string]interface{}{
 			"service": "object",
 			"method":  "execute",
 			"args": []interface{}{
-				config.DB, config.User, config.Password, "product.template", "product_import", data,
+				cfg.DB, cfg.User, cfg.Password, "product.template", "product_import", data,
 			},
 		}
-		url := config.URL
+		url := cfg.URL
 		result, err := jsonrpc.Call(url, params)
 		if err != nil {
 			fmt.Println(err)

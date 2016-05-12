@@ -1,0 +1,65 @@
+{
+    "tables": [
+        {
+            "name": "yuanshop_shop_goods",
+            "filter": "goodssn is not null",
+            "columns": {
+                "id": {
+                    "ctype": "int"
+                },
+                "title": {
+                    "ctype": "string",
+                    "alias": "name"
+                },
+                "goodssn": {
+                    "ctype": "string",
+                    "alias": "default_code"
+                },
+                "marketprice": {
+                    "ctype": "string",
+                    "alias": "list_price"
+                }
+            }
+            // "children": [
+            //     {
+            //         "name": "yuanshop_shop_goods_option",
+            //         "relcol": "goodsid",
+            //         "columns": {
+            //             "id": {
+            //                 "ctype": "int"
+            //             },
+            //             "title": {
+            //                 "ctype": "string"
+            //             }
+            //         }
+            //     },
+            //     {
+            //         "name": "yuanshop_shop_goods_spec",
+            //         "relcol": "goodsid",
+            //         "columns": {
+            //             "id": {
+            //                 "ctype": "int"
+            //             },
+            //             "title": {
+            //                 "ctype": "string"
+            //             }
+            //         },
+            //         "children": [
+            //             {
+            //                 "name": "yuanshop_shop_goods_spec_item",
+            //                 "relcol": "specid",
+            //                 "columns": {
+            //                     "id": {
+            //                         "ctype": "int"
+            //                     },
+            //                     "title": {
+            //                         "ctype": "string"
+            //                     }
+            //                 }
+            //             }
+            //         ]
+            //     }
+            // ]
+        }
+    ]
+}

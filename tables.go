@@ -15,6 +15,8 @@ type jsonobject struct {
 // TableType Type
 type TableType struct {
 	Name     string
+	Filter   string
+	Alias    string
 	Columns  mapcolumn
 	Children []ChildrenType
 }
@@ -27,7 +29,8 @@ type ChildrenType struct {
 
 // ColumnType col type
 type ColumnType struct {
-	Ctype string
+	Ctype string `json:"ctype"`
+	Alias string
 }
 
 // LoadConfig load json config

@@ -7,11 +7,12 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func query(db *sqlx.DB, table TableType, where string) []map[string]interface{} {
+func query(db *sqlx.DB, table *TableType) []map[string]interface{} {
 	cols := strings.Join(table.Columns.Keys(), ",")
 	sql := fmt.Sprintf("select %s from %s", cols, table.Name)
-	if len(where) > 0 {
-		sql += " where " + where
+	filter := table.Filter
+	if len(filter) > 0 {
+		sql += " where " + filter
 	}
 	fmt.Println(sql)
 	rows, err := db.Queryx(sql)
@@ -30,7 +31,13 @@ func query(db *sqlx.DB, table TableType, where string) []map[string]interface{} 
 			if value != nil {
 				switch v := value.(type) {
 				case []byte:
-					results[key] = string(value.([]byte))
+					val := string(value.([]byte))
+					col := table.Columns.getByAlias(key)
+
+					if len(val) > 0 && col.Ctype == "image" {
+						val = cfg.ImageRoot + val
+					}
+					results[key] = val
 					// fmt.Println(key, ": ", string(value.([]byte)))
 				default:
 					fmt.Println("unknown", v)
@@ -39,8 +46,18 @@ func query(db *sqlx.DB, table TableType, where string) []map[string]interface{} 
 		}
 		if table.Children != nil {
 			for _, chi := range table.Children {
-				chidata := query(db, chi.TableType, chi.RelCol+"="+results["id"].(string))
-				results[chi.Name] = chidata
+				where := chi.RelCol + "=" + results["id"].(string)
+				if len(chi.Filter) > 0 {
+					chi.Filter += " and " + where
+				} else {
+					chi.Filter = where
+				}
+				chidata := query(db, &chi.TableType)
+				if len(chi.Alias) > 0 {
+					results[chi.Alias] = chidata
+				} else {
+					results[chi.Name] = chidata
+				}
 			}
 		}
 		data = append(data, results)

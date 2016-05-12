@@ -8,7 +8,7 @@ import (
 )
 
 type config struct {
-	DB, URL, User, Password string
+	DB, URL, User, Password, ImageRoot string
 }
 
 // LoadConfig load json config
