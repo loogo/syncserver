@@ -60,6 +60,7 @@ func query(db *sqlx.DB, table *TableType) []map[string]interface{} {
 				}
 			}
 		}
+		delete(results, "id")
 		data = append(data, results)
 	}
 
