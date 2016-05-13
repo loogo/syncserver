@@ -2,6 +2,9 @@
     "tables": [
         {
             "name": "yuanshop_shop_goods",
+            "model": "product.template",
+            "method": "product_import",
+            "seq": "110",
             "filter": "goodssn is not null and goodssn!=''",
             "columns": {
                 "id": {
@@ -23,6 +26,10 @@
                 "thumb": {
                     "ctype": "image",
                     "alias": "image_url"
+                },
+                "ccate":{
+                    "ctype":"string",
+                    "alias":"third_cate_id"
                 }
             },
             "children": [
@@ -41,6 +48,27 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "yuanshop_shop_category",
+            "model": "product.category",
+            "method": "cate_import",
+            "seq": "100",
+       
+            "columns": {
+                "id": {
+                    "ctype": "int",
+                    "alias": "third_id"
+                },
+                "name": {
+                    "ctype": "string",
+                    "alias": "name"
+                },
+                "parentid": {
+                    "ctype": "string",
+                    "alias": "parent_id"
+                }
+            }
         }
     ]
 }

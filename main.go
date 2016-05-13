@@ -11,15 +11,15 @@ import (
 var cfg config
 
 func main() {
-	db, err := sqlx.Open("mysql", "wcl:1@tcp(192.168.31.127:3306)/gzl")
+	cfg = loadconfig()
+	jsonObj := loadmetadate()
+	fmt.Println(jsonObj)
+
+	db, err := sqlx.Open("mysql", cfg.DataSourceName)
 	if err != nil {
 		fmt.Println("Connect Error: ", err)
 	}
 	defer db.Close()
-
-	cfg = loadconfig()
-	jsonObj := loadmetadate()
-	fmt.Println(jsonObj)
 	for _, table := range jsonObj.Tables {
 		data := query(db, &table)
 		// out, _ := json.Marshal(data)
@@ -28,7 +28,7 @@ func main() {
 			"service": "object",
 			"method":  "execute",
 			"args": []interface{}{
-				cfg.DB, cfg.User, cfg.Password, "product.template", "product_import", data,
+				cfg.DB, cfg.User, cfg.Password, table.Model, table.Method, data,
 			},
 		}
 		url := cfg.URL

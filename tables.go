@@ -5,21 +5,30 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 )
 
 // JSONObject Base Type
 type jsonobject struct {
-	Tables []TableType
+	Tables tableTypes
 }
 
 // TableType Type
 type TableType struct {
 	Name     string
+	Model    string
+	Method   string
+	Seq      string
 	Filter   string
 	Alias    string
 	Columns  mapcolumn
 	Children []ChildrenType
 }
+type tableTypes []TableType
+
+func (a tableTypes) Len() int           { return len(a) }
+func (a tableTypes) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a tableTypes) Less(i, j int) bool { return a[i].Seq < a[j].Seq }
 
 // ChildrenType Type
 type ChildrenType struct {
@@ -47,6 +56,7 @@ func loadmetadate() (tables jsonobject) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	sort.Sort(tables.Tables)
 	// fmt.Println(tables)
 	return tables
 }

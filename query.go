@@ -46,7 +46,7 @@ func query(db *sqlx.DB, table *TableType) []map[string]interface{} {
 		}
 		if table.Children != nil {
 			for _, chi := range table.Children {
-				where := chi.RelCol + "=" + results["id"].(string)
+				where := chi.RelCol + "=" + results[table.Columns["id"].Alias].(string)
 				if len(chi.Filter) > 0 {
 					chi.Filter += " and " + where
 				} else {

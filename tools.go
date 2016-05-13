@@ -13,11 +13,11 @@ func (m *mapcolumn) Keys() (keys []string) {
 	return
 }
 
-func (m *mapcolumn) getByAlias(alias string) *ColumnType {
+func (m *mapcolumn) getByAlias(alias string) ColumnType {
 	for _, val := range *m {
 		if val.Alias == alias {
-			return &val
+			return val
 		}
 	}
-	return &ColumnType{}
+	return ColumnType{}
 }
