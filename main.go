@@ -24,11 +24,12 @@ func main() {
 		data := query(db, &table)
 		// out, _ := json.Marshal(data)
 		// fmt.Println(string(out))
+		fmt.Println(data)
 		params := map[string]interface{}{
 			"service": "object",
-			"method":  "execute",
+			"method":  "execute_kw",
 			"args": []interface{}{
-				cfg.DB, cfg.User, cfg.Password, table.Model, table.Method, data,
+				cfg.DB, cfg.User, cfg.Password, table.Model, table.Method, []interface{}{data}, table.Args,
 			},
 		}
 		url := cfg.URL

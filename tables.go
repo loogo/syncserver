@@ -18,6 +18,7 @@ type TableType struct {
 	Name     string
 	Model    string
 	Method   string
+	Args     map[string]string
 	Seq      string
 	Filter   string
 	Alias    string

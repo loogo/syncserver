@@ -6,6 +6,10 @@
             "method": "product_import",
             "seq": "110",
             "filter": "goodssn is not null and goodssn!=''",
+            "args": {
+                "code": "gzl",
+                "name": "百家"
+            },
             "columns": {
                 "id": {
                     "ctype": "int",
@@ -27,9 +31,13 @@
                     "ctype": "image",
                     "alias": "image_url"
                 },
-                "ccate":{
-                    "ctype":"string",
-                    "alias":"third_cate_id"
+                "ccate": {
+                    "ctype": "string",
+                    "alias": "third_cate_id"
+                },
+                "total": {
+                    "ctype": "string",
+                    "alias": "qty"
                 }
             },
             "children": [
@@ -54,7 +62,6 @@
             "model": "product.category",
             "method": "cate_import",
             "seq": "100",
-       
             "columns": {
                 "id": {
                     "ctype": "int",
