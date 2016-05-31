@@ -46,14 +46,14 @@ func query(db *sqlx.DB, table *TableType) []map[string]interface{} {
 							for rkey, rvalue := range relVal {
 								results[rkey] = string(rvalue.([]byte))
 							}
+
 							continue
 						}
-
 					}
 					results[key] = val
 					// fmt.Println(key, ": ", string(value.([]byte)))
 				default:
-					fmt.Println("unknown", v)
+					fmt.Printf("%s   %s    %s\n", key, value, v)
 				}
 			}
 		}

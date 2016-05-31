@@ -25,7 +25,7 @@
             "model": "product.template",
             "method": "product_import",
             "seq": "110",
-            "filter": "goodssn is not null and goodssn!=''",
+            "filter": "",
             "args": {
                 "code": "gzl",
                 "name": "百家",
@@ -54,7 +54,7 @@
                     "ctype": "image",
                     "alias": "image_url"
                 },
-                "ccate": {
+                "pcate": {
                     "ctype": "string",
                     "alias": "third_cate_id"
                 },
@@ -91,9 +91,14 @@
                                     "select": [
                                         "title as item_name",
                                         "goodssn as default_code",
-                                        "marketprice as lst_price"
+                                        "marketprice as lst_price",
+                                        "stock as qty"
                                     ],
                                     "alias": "id"
+                                },
+                                "thumb": {
+                                    "ctype": "image",
+                                    "alias": "image_url"
                                 }
                             }
                         }
@@ -145,6 +150,15 @@
                                 "goodssn as code"
                             ],
                             "alias": "goodsid"
+                        },
+                        "optionid": {
+                            "ctype": "relation",
+                            "relation": "yuanshop_shop_goods_option",
+                            "relcol": "id",
+                            "select": [
+                                "goodssn as code"
+                            ],
+                            "alias": "optionid"
                         },
                         "price": {
                             "ctype": "string",

@@ -8,8 +8,8 @@ before_install:
   - go get github.com/tcnksm/ghr
 
 after_success:
-  - gox -arch="amd64" -os="windows linux darwin" -output "dist/{{.OS}}_{{.Arch}}_r${TRAVIS_BUILD_NUMBER}/{{.Dir}}"
+  - gox -arch="amd64" -os="windows linux darwin" -output "dist/{{.OS}}_{{.Arch}}/{{.Dir}}"
   - mkdir -p zip
   - for i in `ls dist`; do zip -j zip/$i.zip dist/$i/*; done
   # - gox -output "dist/{{.OS}}_{{.Arch}}_{{.Dir}}_R${TRAVIS_COMMIT}"
-  - ghr --username loogo --token $GITHUB_TOKEN --replace --debug SyncServer_r${TRAVIS_BUILD_NUMBER} zip/
+  - ghr --username loogo --token $GITHUB_TOKEN --replace --debug SyncServer zip/
