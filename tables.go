@@ -18,7 +18,7 @@ type TableType struct {
 	Name     string
 	Model    string
 	Method   string
-	Args     map[string]string
+	Args     map[string]interface{}
 	Seq      string
 	Filter   string
 	Alias    string
@@ -39,8 +39,11 @@ type ChildrenType struct {
 
 // ColumnType col type
 type ColumnType struct {
-	Ctype string `json:"ctype"`
-	Alias string
+	Ctype    string `json:"ctype"`
+	Alias    string
+	Relation string
+	Relcol   string
+	Select   []string
 }
 
 // LoadConfig load json config

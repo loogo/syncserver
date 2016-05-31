@@ -34,8 +34,21 @@ func query(db *sqlx.DB, table *TableType) []map[string]interface{} {
 					val := string(value.([]byte))
 					col := table.Columns.getByAlias(key)
 
-					if len(val) > 0 && col.Ctype == "image" {
-						val = cfg.ImageRoot + val
+					if len(val) > 0 {
+						switch col.Ctype {
+						case "image":
+							val = cfg.ImageRoot + val
+						case "relation":
+							sql = fmt.Sprintf("select %s from %s where %s=%s", strings.Join(col.Select, ","), col.Relation, col.Relcol, val)
+
+							relVal := make(map[string]interface{})
+							db.QueryRowx(sql).MapScan(relVal)
+							for rkey, rvalue := range relVal {
+								results[rkey] = string(rvalue.([]byte))
+							}
+							continue
+						}
+
 					}
 					results[key] = val
 					// fmt.Println(key, ": ", string(value.([]byte)))

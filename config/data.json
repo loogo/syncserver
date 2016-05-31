@@ -1,6 +1,26 @@
 {
     "tables": [
         {
+            "name": "yuanshop_shop_category",
+            "model": "product.category",
+            "method": "cate_import",
+            "seq": "100",
+            "columns": {
+                "id": {
+                    "ctype": "int",
+                    "alias": "third_id"
+                },
+                "name": {
+                    "ctype": "string",
+                    "alias": "name"
+                },
+                "parentid": {
+                    "ctype": "string",
+                    "alias": "parent_id"
+                }
+            }
+        },
+        {
             "name": "yuanshop_shop_goods",
             "model": "product.template",
             "method": "product_import",
@@ -8,7 +28,10 @@
             "filter": "goodssn is not null and goodssn!=''",
             "args": {
                 "code": "gzl",
-                "name": "百家"
+                "name": "百家",
+                "context": {
+                    "lang": "zh_CN"
+                }
             },
             "columns": {
                 "id": {
@@ -44,38 +67,96 @@
                 {
                     "name": "yuanshop_shop_goods_spec",
                     "alias": "spec_info",
-                    "filter": "1=2",
                     "relcol": "goodsid",
                     "columns": {
                         "id": {
-                            "ctype": "int"
+                            "ctype": "int",
+                            "alias": "id"
                         },
                         "title": {
-                            "ctype": "string"
+                            "ctype": "string",
+                            "alias": "spec_name"
                         }
-                    }
+                    },
+                    "children": [
+                        {
+                            "name": "yuanshop_shop_goods_spec_item",
+                            "alias": "spec_items",
+                            "relcol": "specid",
+                            "columns": {
+                                "id": {
+                                    "ctype": "relation",
+                                    "relation": "yuanshop_shop_goods_option",
+                                    "relcol": "specs",
+                                    "select": [
+                                        "title as item_name",
+                                        "goodssn as default_code",
+                                        "marketprice as lst_price"
+                                    ],
+                                    "alias": "id"
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "yuanshop_shop_category",
-            "model": "product.category",
-            "method": "cate_import",
-            "seq": "100",
+            "name": "yuanshop_shop_order",
+            "model": "sale.order",
+            "method": "create_sales_order",
+            "seq": "120",
+            "filter": "status >= 0",
+            "args": {
+                "bom_open": false
+            },
             "columns": {
                 "id": {
                     "ctype": "int",
-                    "alias": "third_id"
+                    "alias": "id"
                 },
-                "name": {
+                "address_realname": {
                     "ctype": "string",
                     "alias": "name"
                 },
-                "parentid": {
+                "address_mobile": {
                     "ctype": "string",
-                    "alias": "parent_id"
+                    "alias": "mobile"
+                },
+                "ordersn": {
+                    "ctype": "string",
+                    "alias": "mark"
                 }
-            }
+            },
+            "children": [
+                {
+                    "name": "yuanshop_shop_order_goods",
+                    "alias": "product_infos",
+                    "relcol": "orderid",
+                    "columns": {
+                        "id": {
+                            "ctype": "int"
+                        },
+                        "goodsid": {
+                            "ctype": "relation",
+                            "relation": "yuanshop_shop_goods",
+                            "relcol": "id",
+                            "select": [
+                                "goodssn as code"
+                            ],
+                            "alias": "goodsid"
+                        },
+                        "price": {
+                            "ctype": "string",
+                            "alias": "price"
+                        },
+                        "total": {
+                            "ctype": "int",
+                            "alias": "qty"
+                        }
+                    }
+                }
+            ]
         }
     ]
 }
